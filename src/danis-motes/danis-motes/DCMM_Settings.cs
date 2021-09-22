@@ -15,6 +15,7 @@ namespace Danis_Motes
 		static MotesTexturePatchSetter()
 		{
 			DCMM_SetsSettings.motes = new ThingDef[] { DCMM_ThingDefOf.DCMM_Happy, DCMM_ThingDefOf.DCMM_Content, DCMM_ThingDefOf.DCMM_Neutral, DCMM_ThingDefOf.DCMM_Minor, DCMM_ThingDefOf.DCMM_Major, DCMM_ThingDefOf.DCMM_Breaking, DCMM_ThingDefOf.DCMM_Downed };
+			DCMM_SetsSettings.GetFolders();
 			DCMM_SetsSettings.SetMotePaths();
 		}
 	}
@@ -23,7 +24,7 @@ namespace Danis_Motes
 	{
 		public static ThingDef[] motes;
 		public static readonly List<string> folderPaths = new List<string>();
-		public static readonly string defaultFolderPath = "CMMMotes/default";
+		public static readonly string defaultFolderPath = "DCMMMotes/default";
 		public static string currentFolderPath;
 		public static string folderErrors = "";
 
@@ -34,29 +35,29 @@ namespace Danis_Motes
 
 		public override void ExposeData()
 		{
-			if (Scribe.mode == LoadSaveMode.PostLoadInit)
-			{
-				foreach (ModContentPack modContentPack in LoadedModManager.RunningMods)
-				{
-					foreach (string path in modContentPack.foldersToLoadDescendingOrder)
-					{
-						string text = Path.Combine(path, "Textures\\DCMMMotes");
-						if (new DirectoryInfo(text).Exists)
-						{
-							foreach (VirtualDirectory virtualDirectory in AbstractFilesystem.GetDirectories(text, "*", SearchOption.TopDirectoryOnly, false))
-							{
-								bool flag = DoesFileExist(virtualDirectory, "Happy") && DoesFileExist(virtualDirectory, "Content") && DoesFileExist(virtualDirectory, "Neutral") && DoesFileExist(virtualDirectory, "Major") && DoesFileExist(virtualDirectory, "Minor") && DoesFileExist(virtualDirectory, "Breaking") && DoesFileExist(virtualDirectory, "Downed");
+			Scribe_Values.Look(ref currentFolderPath, "currentFolderPath");
+			base.ExposeData();
+			SetMotePaths();
+		}
 
-								if (flag) folderPaths.Add(virtualDirectory.Name);
-							}
+		public static void GetFolders()
+		{
+			foreach (ModContentPack modContentPack in LoadedModManager.RunningMods)
+			{
+				foreach (string path in modContentPack.foldersToLoadDescendingOrder)
+				{
+					string text = Path.Combine(path, "Textures\\DCMMMotes");
+					if (new DirectoryInfo(text).Exists)
+					{
+						foreach (VirtualDirectory virtualDirectory in AbstractFilesystem.GetDirectories(text, "*", SearchOption.TopDirectoryOnly, false))
+						{
+							bool flag = DoesFileExist(virtualDirectory, "Happy") && DoesFileExist(virtualDirectory, "Content") && DoesFileExist(virtualDirectory, "Neutral") && DoesFileExist(virtualDirectory, "Major") && DoesFileExist(virtualDirectory, "Minor") && DoesFileExist(virtualDirectory, "Breaking") && DoesFileExist(virtualDirectory, "Downed");
+
+							if (flag) folderPaths.Add(virtualDirectory.Name);
 						}
 					}
 				}
 			}
-
-			Scribe_Values.Look(ref currentFolderPath, "currentFolderPath");
-			base.ExposeData();
-			SetMotePaths();
 		}
 
 

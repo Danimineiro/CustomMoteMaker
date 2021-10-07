@@ -67,7 +67,7 @@ namespace Danis_Motes
 
 			if (!flag)
             {
-				Log.Error("[DCMM] The folder " + virtualDirectory.FullPath + " is missing " + texName + ".png! Please make sure that all the files have the correct name (case sensitive) and that they are present!");
+				Log.Error("ErrorMissingFile".Translate(virtualDirectory.FullPath, texName));
             }
 
 			return flag;
@@ -157,19 +157,19 @@ namespace Danis_Motes
 			Text.Font = GameFont.Medium;
 			Text.Anchor = TextAnchor.UpperLeft;
 
-			Widgets.Label(DescriptionLabelRect, "Use this settings menu to select which set of motes you want to have displayed when playing the game. If you want to use new textures, or make your own, you can download a sample mod from this mods steam workshop page. Simply swap out the textures for textures you want.\n\nDefault textures by ItsHalno");
+			Widgets.Label(DescriptionLabelRect, "SettingsDescription".Translate());
 
 			Text.Font = prevFont;
 			Text.Anchor = textAnchor;
 			Text.Font = GameFont.Medium;
 			Text.Anchor = TextAnchor.MiddleCenter;
 
-			Widgets.Label(SelectFolderLabelRect, "Currently selected set:");
+			Widgets.Label(SelectFolderLabelRect, "CurrentlySelectedSet".Translate());
 
 			Text.Font = GameFont.Tiny;
 			Text.Anchor = TextAnchor.LowerLeft;
 
-			Widgets.Label(CreditToNesGUILabelRect, "This GUI was mostly created using NesGUI. NesGUI is a WIP tool that helps modders create GUIs.");
+			Widgets.Label(CreditToNesGUILabelRect, "CreditToNesGUI".Translate());
 
 			Text.Font = prevFont;
 			Text.Anchor = textAnchor;

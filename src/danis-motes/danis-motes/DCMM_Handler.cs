@@ -27,7 +27,7 @@ namespace Danis_Motes
 
 		public static void MakeMoodMoteFor(Pawn pawn)
         {
-			if (!pawn.canHaveMotes()) return;
+			if (!pawn.CanHaveMotes()) return;
 
 			if (pawn.Downed)
 			{

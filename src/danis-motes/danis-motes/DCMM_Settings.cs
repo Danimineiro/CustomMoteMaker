@@ -1,8 +1,6 @@
 ﻿using RimWorld.IO;
 using Verse;
-using HarmonyLib;
 using System.Collections.Generic;
-using Verse.AI;
 using UnityEngine;
 using System.IO;
 
@@ -51,15 +49,14 @@ namespace Danis_Motes
 					{
 						foreach (VirtualDirectory virtualDirectory in AbstractFilesystem.GetDirectories(text, "*", SearchOption.TopDirectoryOnly, false))
 						{
-							bool flag = DoesFileExist(virtualDirectory, "Happy") && DoesFileExist(virtualDirectory, "Content") && DoesFileExist(virtualDirectory, "Neutral") && DoesFileExist(virtualDirectory, "Major") && DoesFileExist(virtualDirectory, "Minor") && DoesFileExist(virtualDirectory, "Breaking") && DoesFileExist(virtualDirectory, "Downed");
-
-							if (flag) folderPaths.Add(virtualDirectory.Name);
+							if (DoFilesExist(virtualDirectory)) folderPaths.Add(virtualDirectory.Name);
 						}
 					}
 				}
 			}
 		}
 
+		private static bool DoFilesExist(VirtualDirectory virtualDirectory) => DoesFileExist(virtualDirectory, "Happy") && DoesFileExist(virtualDirectory, "Content") && DoesFileExist(virtualDirectory, "Neutral") && DoesFileExist(virtualDirectory, "Major") && DoesFileExist(virtualDirectory, "Minor") && DoesFileExist(virtualDirectory, "Breaking") && DoesFileExist(virtualDirectory, "Downed");
 
 		public static bool DoesFileExist(VirtualDirectory virtualDirectory, string texName)
         {

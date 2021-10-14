@@ -69,6 +69,7 @@
     <Compile Include="DCMM_Animator.cs" />
     <Compile Include="DCMM_Handler.cs" />
     <Compile Include="DCMM_Settings.cs" />
+    <Compile Include="DCMM_Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

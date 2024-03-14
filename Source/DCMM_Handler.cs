@@ -29,7 +29,8 @@ namespace Danis_Motes
         {
 			if (!pawn.CanHaveMotes()) return;
 
-			if (pawn.Downed)
+			Log.Message($"{pawn.NameShortColored} is a {pawn.DevelopmentalStage} which is bigger: {pawn.DevelopmentalStage > DevelopmentalStage.Newborn}");
+			if (pawn.Downed && pawn.DevelopmentalStage > DevelopmentalStage.Baby)
 			{
 				pawn.MakeAnimatedBubble(DCMM_ThingDefOf.DCMM_Downed);
 				return;

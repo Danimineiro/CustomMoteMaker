@@ -7,6 +7,5 @@
     <exclude>CustomMoteMaker.sln</exclude>
     <exclude>obj</exclude>
     <exclude>Other</exclude>
-    <exclude>Source</exclude>
   </Excluded>
 </Configuration>

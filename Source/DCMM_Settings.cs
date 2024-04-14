@@ -33,7 +33,7 @@ namespace Danis_Motes
 
 		public override void ExposeData()
 		{
-			Scribe_Values.Look(ref currentFolderPath, "currentFolderPath");
+			Scribe_Values.Look(ref currentFolderPath, "currentFolderPath", defaultFolderPath, true);
 			base.ExposeData();
 			SetMotePaths();
 		}

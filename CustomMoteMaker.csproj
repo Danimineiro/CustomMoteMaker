@@ -3,18 +3,24 @@
 		<TargetFramework>net481</TargetFramework>
 		<LangVersion>13</LangVersion>
 		<Nullable>enable</Nullable>
+		
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RootNamespace>CustomMoteMaker</RootNamespace>
+		<RootNamespace>Danis_Motes</RootNamespace>
 		<OutputPath>1.5/Assemblies</OutputPath>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4063" />
 		<PackageReference Include="Lib.Harmony" Version="2.3.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Using Include="System.Diagnostics.CodeAnalysis" />
 	</ItemGroup>
 
 </Project>

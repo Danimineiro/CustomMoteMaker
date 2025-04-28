@@ -3,11 +3,11 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Danis_Motes
-{
+namespace Danis_Motes;
+
 	class DCMM_Animator : GameComponent
 	{
-		private List<MoteBubbleData> bubbleDatas = new List<MoteBubbleData>();
+		private readonly List<MoteBubbleData> bubbleDatas = [];
 
 		static DCMM_Animator()
 		{
@@ -21,16 +21,16 @@ namespace Danis_Motes
 		{
 			base.GameComponentTick();
 
-			List<MoteBubbleData> toRemove = new List<MoteBubbleData>();
+			List<MoteBubbleData> toRemove = [];
 			foreach(MoteBubbleData bubbleData in bubbleDatas)
 			{
 				if(bubbleData.bubble.Destroyed)
-                {
+            {
 					toRemove.Add(bubbleData);
 
 				} 
 				else
-                {
+            {
 					bubbleData.bubble.exactPosition.x += bubbleData.randomVector.x;
 					bubbleData.bubble.exactPosition.z += bubbleData.randomVector.z;
 				}
@@ -38,9 +38,9 @@ namespace Danis_Motes
 			}
 
 			foreach(MoteBubbleData bubbleData in toRemove)
-            {
+        {
 				bubbleDatas.Remove(bubbleData);
-            }
+        }
 		}
 
 		public void AddBubble(MoteBubble bubble)
@@ -56,7 +56,7 @@ namespace Danis_Motes
 			private readonly float zRandMod = .11f;
 
 			private readonly float speedMult = 0.07f;
-			private readonly Vector3 baseMovement = new Vector3(0.004f, 0f , 0.0020f);
+			private readonly Vector3 baseMovement = new(0.004f, 0f , 0.0020f);
 
 			public MoteBubble bubble;
 			public Vector3 randomVector;
@@ -64,15 +64,15 @@ namespace Danis_Motes
 			public bool posSin;
 
 			public float Age
-            {
+        {
 				get
-                {
+            {
 					return (Find.TickManager.TicksGame - creationTick) / (bubble.def.mote.Lifespan * 60);
 				}
-            }
+        }
 
 			public MoteBubbleData(MoteBubble bubble)
-            {
+        {
 				this.bubble = bubble;
 				bubble.exactPosition.x += (Rand.Value - .5f) * posMod;
 				bubble.exactPosition.z += (Rand.Value - .5f) * posMod;
@@ -82,6 +82,5 @@ namespace Danis_Motes
 
 				posSin = Rand.Value > .5;
 			}
-        }
+    }
 	}
-}

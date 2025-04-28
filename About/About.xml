@@ -23,6 +23,6 @@
 	</supportedVersions>
 	<packageId>dani.CustomMoteMaker</packageId>
 	<description>Selecting a pawn causes a mote to spawn in relation to their current mood in relation to mental break thresholds.</description>
-	<modVersion IgnoreIfNoMatchingField="True">3.0.2</modVersion>
+	<modVersion IgnoreIfNoMatchingField="True">3.0.3</modVersion>
 	<url>https://github.com/Danimineiro/CustomMoteMaker</url>
 </ModMetaData>

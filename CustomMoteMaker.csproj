@@ -12,6 +12,7 @@
 		<OutputPath>1.5/Assemblies</OutputPath>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<AssemblyVersion>3.0.3</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

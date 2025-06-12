@@ -8,15 +8,15 @@
 		<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RootNamespace>Danis_Motes</RootNamespace>
-		<OutputPath>1.5/Assemblies</OutputPath>
+		<RootNamespace />
+		<OutputPath>1.6/Assemblies</OutputPath>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyVersion>3.0.3</AssemblyVersion>
+		<AssemblyVersion>4.0.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4409" />
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4488-beta" />
 		<PackageReference Include="Lib.Harmony" Version="2.3.6" />
 	</ItemGroup>
 

@@ -38,22 +38,19 @@ public class DCMM_SetsSettings : ModSettings
     }
 
     public static void GetFolders()
-    {
-        foreach (ModContentPack modContentPack in LoadedModManager.RunningMods)
+    {    
+        foreach (string path in LoadedModManager.RunningMods.SelectMany(pack => pack.foldersToLoadDescendingOrder))
         {
-            foreach (string path in modContentPack.foldersToLoadDescendingOrder)
-            {
-                string combinedPath = Path.Combine(path, "Textures\\DCMMMotes");
-                if (!Directory.Exists(combinedPath)) continue;
+            string combinedPath = Path.Combine(path, "Textures\\DCMMMotes");
+            if (!Directory.Exists(combinedPath)) continue;
                 
-                foreach (VirtualDirectory virtualDirectory in AbstractFilesystem.GetDirectories(combinedPath, "*", SearchOption.TopDirectoryOnly, false))
-                {
-                    if (DoFilesExist(virtualDirectory)) FolderPaths.Add(virtualDirectory.Name);
-                }
+            foreach (VirtualDirectory virtualDirectory in AbstractFilesystem.GetDirectories(combinedPath, "*", SearchOption.TopDirectoryOnly, false))
+            {
+                if (DoFilesExist(virtualDirectory)) FolderPaths.Add(virtualDirectory.Name);
             }
         }
     }
-
+    
     private static bool DoFilesExist(VirtualDirectory virtualDirectory) =>
         DoesFileExist(virtualDirectory, "Happy") &&
         DoesFileExist(virtualDirectory, "Content") &&
@@ -65,14 +62,11 @@ public class DCMM_SetsSettings : ModSettings
 
     public static bool DoesFileExist(VirtualDirectory virtualDirectory, string texName)
     {
-        bool flag = virtualDirectory.FileExists(texName + ".png");
-
-        if (!flag)
-        {
-            Log.Error("ErrorMissingFile".Translate(virtualDirectory.FullPath, texName));
-        }
-
-        return flag;
+        string fileNameWithExtension = $"{texName}.png";
+        if (virtualDirectory.FileExists(fileNameWithExtension)) return true;
+        
+        Log.Error("ErrorMissingFile".Translate(virtualDirectory.FullPath, fileNameWithExtension));
+        return false;
     }
 
     public static void SetMotePaths()

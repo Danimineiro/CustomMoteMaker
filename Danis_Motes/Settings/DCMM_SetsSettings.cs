@@ -1,4 +1,5 @@
 ﻿using RimWorld.IO;
+using System.IO;
 using Verse;
 
 namespace Danis_Motes.Settings;
@@ -79,9 +80,9 @@ public class DCMM_SetsSettings : ModSettings
     {
         if (!force && Scribe.mode is not LoadSaveMode.Inactive or LoadSaveMode.Saving) return;
 
-        if (!FolderPaths.Contains(CurrentFolderPath))
+        if (!FolderPaths.Contains(CurrentFolderPath?[(CurrentFolderPath.LastIndexOf("/") + 1)..] ?? "Missing Folder"))
         {
-            Log.WarningOnce($"Custom Mote Maker couldn't find the folder containing the motes which was last set in the settings and is reverting to using default motes.", CurrentFolderPath.GetHashCode());
+            Log.WarningOnce($"Custom Mote Maker couldn't find the folder containing the motes which was last set in the settings and is reverting to using default motes.", CurrentFolderPath?.GetHashCode() ?? defaultFolderPath.GetHashCode());
             CurrentFolderPath = defaultFolderPath;
         }
 

@@ -72,7 +72,6 @@ public class DCMM_SetsSettings : ModSettings
     public static void SetMotePaths()
     {
         if (Scribe.mode is not LoadSaveMode.Inactive or LoadSaveMode.Saving) return;
-        Log.Message($"Hi scribe mode {Scribe.mode}");
 
         foreach (ThingDef thingDef in Motes)
         {

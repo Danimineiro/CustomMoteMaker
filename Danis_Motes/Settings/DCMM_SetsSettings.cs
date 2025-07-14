@@ -79,6 +79,12 @@ public class DCMM_SetsSettings : ModSettings
     {
         if (!force && Scribe.mode is not LoadSaveMode.Inactive or LoadSaveMode.Saving) return;
 
+        if (!FolderPaths.Contains(CurrentFolderPath))
+        {
+            Log.WarningOnce($"Custom Mote Maker couldn't find the folder containing the motes which was last set in the settings and is reverting to using default motes.", CurrentFolderPath.GetHashCode());
+            CurrentFolderPath = defaultFolderPath;
+        }
+
         foreach (ThingDef thingDef in Motes)
         {
             GraphicData temp = new();

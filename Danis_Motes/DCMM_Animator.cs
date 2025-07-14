@@ -32,4 +32,9 @@ public class DCMM_Animator : GameComponent
     }
 
     public void AddBubble(MoteBubble bubble) => bubbleDatas.Add(new DCMM_MoteBubbleData(bubble));
+
+    public override void FinalizeInit()
+    {
+        DCMM_SetsSettings.SetMotePaths(true);
+    }
 }

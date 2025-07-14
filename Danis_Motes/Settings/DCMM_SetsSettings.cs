@@ -35,6 +35,12 @@ public class DCMM_SetsSettings : ModSettings
         }
 
         base.ExposeData();
+
+        // Settings saved and world active
+        if (Scribe.mode == LoadSaveMode.Saving && Find.World != null)
+        {
+            SetMotePaths(true);
+        }
     }
 
     public static void GetFolders()
@@ -69,9 +75,9 @@ public class DCMM_SetsSettings : ModSettings
         return false;
     }
 
-    public static void SetMotePaths()
+    public static void SetMotePaths(bool force = false)
     {
-        if (Scribe.mode is not LoadSaveMode.Inactive or LoadSaveMode.Saving) return;
+        if (!force && Scribe.mode is not LoadSaveMode.Inactive or LoadSaveMode.Saving) return;
 
         foreach (ThingDef thingDef in Motes)
         {

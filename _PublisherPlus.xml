@@ -5,7 +5,7 @@
     <exclude>.vs</exclude>
     <exclude>CustomMoteMaker.csproj</exclude>
     <exclude>CustomMoteMaker.sln</exclude>
+    <exclude>Danis_Motes</exclude>
     <exclude>obj</exclude>
-    <exclude>Other</exclude>
   </Excluded>
 </Configuration>

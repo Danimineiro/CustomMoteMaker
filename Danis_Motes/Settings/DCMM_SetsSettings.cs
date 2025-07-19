@@ -1,98 +1,81 @@
-﻿using RimWorld.IO;
-using System.IO;
+﻿using Danis_Motes.Defs;
+using RimWorld.IO;
+using System.Runtime.CompilerServices;
 using Verse;
 
 namespace Danis_Motes.Settings;
 
 public class DCMM_SetsSettings : ModSettings
 {
-    private const string defaultFolderPath = "DCMMMotes/default";
+    private static string? currentFolderPath;
+    private static string? selectedMoteSetDefName;
 
-    private static ThingDef[]? motes;
-    private static ThingDef[] Motes => motes ??= [DCMM_ThingDefOf.DCMM_Happy, DCMM_ThingDefOf.DCMM_Content, DCMM_ThingDefOf.DCMM_Neutral, DCMM_ThingDefOf.DCMM_Minor, DCMM_ThingDefOf.DCMM_Major, DCMM_ThingDefOf.DCMM_Breaking, DCMM_ThingDefOf.DCMM_Downed];
+    private static MoteSetDef? selectedMoteSetDef;
 
-    public static List<string> FolderPaths { get; } = [];
-
-    private static string currentFolderPath = defaultFolderPath;
-    public static string CurrentFolderPath
+    public static MoteSetDef SelectedMoteSetDef
     {
-        get => currentFolderPath;
-        set => currentFolderPath = value;
+        get
+        {
+            if (selectedMoteSetDef is not null) return selectedMoteSetDef;            
+            if (selectedMoteSetDefName is not null)
+            {
+                return selectedMoteSetDef = DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName);
+            }
+
+            return selectedMoteSetDef ?? MoteSetDefOf.DCMM_Default;
+        }
+        set
+        {
+            selectedMoteSetDef = value;
+            selectedMoteSetDefName = value.defName;
+        }
     }
 
-    static DCMM_SetsSettings() => GetFolders();
+    [AllowNull] public static DCMM_SetsSettings Instance { get; private set; }
 
-    public DCMM_SetsSettings() => CurrentFolderPath = defaultFolderPath;
+    public DCMM_SetsSettings() => Instance = this;
 
     public override void ExposeData()
     {
-        Scribe_Values.Look(ref currentFolderPath, "currentFolderPath", defaultFolderPath);
+#if DEBUG
+        Log.Message($"[DCMM|{Scribe.mode}|Pre] currentFolderPath: {currentFolderPath}, selectedMoteSetDef: {selectedMoteSetDef?.defName ?? "none"}.");
+#endif
 
-        SetMotePaths();
-        
-        if (Scribe.mode == LoadSaveMode.LoadingVars)
-        {
-            currentFolderPath ??= defaultFolderPath;
-        }
+        Scribe_Values.Look(ref currentFolderPath, nameof(currentFolderPath));
+        Scribe_Values.Look(ref selectedMoteSetDefName, nameof(selectedMoteSetDefName));
 
+#if DEBUG
+        Log.Message($"[DCMM|{Scribe.mode}|Post] currentFolderPath: {currentFolderPath}, selectedMoteSetDef: {selectedMoteSetDef?.defName ?? "none"}.");
+#endif
         base.ExposeData();
-
-        // Settings saved and world active
-        if (Scribe.mode == LoadSaveMode.Saving && Find.World != null)
-        {
-            SetMotePaths(true);
-        }
     }
 
-    public static void GetFolders()
-    {    
-        foreach (string path in LoadedModManager.RunningMods.SelectMany(pack => pack.foldersToLoadDescendingOrder))
-        {
-            string combinedPath = Path.Combine(path, "Textures\\DCMMMotes");
-            if (!Directory.Exists(combinedPath)) continue;
-                
-            foreach (VirtualDirectory virtualDirectory in AbstractFilesystem.GetDirectories(combinedPath, "*", SearchOption.TopDirectoryOnly, false))
-            {
-                if (DoFilesExist(virtualDirectory)) FolderPaths.Add(virtualDirectory.Name);
-            }
-        }
-    }
-    
-    private static bool DoFilesExist(VirtualDirectory virtualDirectory) =>
-        DoesFileExist(virtualDirectory, "Happy") &&
-        DoesFileExist(virtualDirectory, "Content") &&
-        DoesFileExist(virtualDirectory, "Neutral") &&
-        DoesFileExist(virtualDirectory, "Major") &&
-        DoesFileExist(virtualDirectory, "Minor") &&
-        DoesFileExist(virtualDirectory, "Breaking") &&
-        DoesFileExist(virtualDirectory, "Downed");
-
-    public static bool DoesFileExist(VirtualDirectory virtualDirectory, string texName)
+    public static void MigrateSavedSettings()
     {
-        string fileNameWithExtension = $"{texName}.png";
-        if (virtualDirectory.FileExists(fileNameWithExtension)) return true;
-        
-        Log.Error("ErrorMissingFile".Translate(virtualDirectory.FullPath, fileNameWithExtension));
-        return false;
-    }
+        if (currentFolderPath == null) return;
 
-    public static void SetMotePaths(bool force = false)
-    {
-        if (!force && Scribe.mode is not LoadSaveMode.Inactive or LoadSaveMode.Saving) return;
+        Log.Message($"[DCMM] Migrating old set settings...");
 
-        if (!FolderPaths.Contains(CurrentFolderPath?[(CurrentFolderPath.LastIndexOf("/") + 1)..] ?? "Missing Folder"))
+        string oldFolderName = Path.GetFileName(currentFolderPath);
+
+        Log.Message($"[DCMM] Old folder based set: '{oldFolderName}'");
+
+        MoteSetDef? foundSet = DefDatabase<MoteSetDef>.AllDefs
+            .Where(static def => def.OldFolderName != null)
+            .FirstOrDefault(def => def.OldFolderName == oldFolderName);
+
+        if (foundSet is null)
         {
-            Log.WarningOnce($"Custom Mote Maker couldn't find the folder containing the motes which was last set in the settings and is reverting to using default motes.", CurrentFolderPath?.GetHashCode() ?? defaultFolderPath.GetHashCode());
-            CurrentFolderPath = defaultFolderPath;
+            Log.Warning($"[DCMM] Could not find a new set for: '{oldFolderName}'. Defaulting to {MoteSetDefOf.DCMM_Default.defName}.");
+            return;
         }
 
-        foreach (ThingDef thingDef in Motes)
-        {
-            GraphicData temp = new();
-            temp.CopyFrom(thingDef.graphicData);
-            temp.texPath = CurrentFolderPath + thingDef.graphicData.texPath[thingDef.graphicData.texPath.LastIndexOf('/')..];
+        Log.Message($"[DCMM] Found set: '{foundSet.defName}'. Setting it.");
+        SelectedMoteSetDef = foundSet;
+        currentFolderPath = null;
 
-            thingDef.graphicData.CopyFrom(temp);
-        }
+        Instance.Write();
     }
+
+    public static ThingDef MoteFor(MoteDefType type) => SelectedMoteSetDef.GetMote(type);
 }

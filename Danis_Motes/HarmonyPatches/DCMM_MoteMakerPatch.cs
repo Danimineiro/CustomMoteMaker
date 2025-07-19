@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Danis_Motes.Settings;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -29,13 +30,13 @@ public class DCMM_MoteMakerPatch
 
         if (pawn.Downed && pawn.DevelopmentalStage > DevelopmentalStage.Baby)
         {
-            pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Downed);
+            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.DownedMote);
             return;
         }
 
         if (pawn.MentalStateDef != null)
         {
-            pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Breaking);
+            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.BreakingMote);
             return;
         }
 
@@ -43,19 +44,19 @@ public class DCMM_MoteMakerPatch
 
         if (mentalBreaker.BreakExtremeIsImminent)
         {
-            pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Breaking);
+            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.BreakingMote);
             return;
         }
 
         if (mentalBreaker.BreakMajorIsImminent)
         {
-            pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Major);
+            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.MajorMote);
             return;
         }
 
         if (mentalBreaker.BreakMinorIsImminent)
         {
-            pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Minor);
+            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.MinorMote);
             return;
         }
 
@@ -64,15 +65,15 @@ public class DCMM_MoteMakerPatch
         switch (num)
         {
             case 0 or 1:
-                pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Neutral);
+                pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.NeutralMote);
                 return;
 
             case 2 or 3:
-                pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Content);
+                pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.ContentMote);
                 return;
 
             case 4:
-                pawn.SpawnAnimatedBubble(DCMM_ThingDefOf.DCMM_Happy);
+                pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.HappyMote);
                 return;
         }
     }

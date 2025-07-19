@@ -4,10 +4,10 @@ using Verse;
 
 namespace Danis_Motes;
 
-public class DCMM_Animator : GameComponent
+#pragma warning disable CS9113 // Parameter is unread.
+public class DCMM_Animator(Game _) : GameComponent
+#pragma warning restore CS9113 // Parameter is unread.
 {
-    public DCMM_Animator(Game _) => DCMM_SetsSettings.SetMotePaths();
-
     private readonly List<DCMM_MoteBubbleData> bubbleDatas = [];
 
     public override void GameComponentTick()
@@ -35,6 +35,7 @@ public class DCMM_Animator : GameComponent
 
     public override void FinalizeInit()
     {
-        DCMM_SetsSettings.SetMotePaths(true);
+        DCMM_SetsSettings.MigrateSavedSettings();
+        bubbleDatas.Clear();
     }
 }

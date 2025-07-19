@@ -1,12 +1,11 @@
-﻿using UnityEngine;
+﻿using Danis_Motes.Defs;
+using UnityEngine;
 using Verse;
 
 namespace Danis_Motes.Settings;
 
 public class DCMM_Mod : Mod
 {
-    private static bool HasSetMotePathsOnce { get; set; }
-
     public static DCMM_SetsSettings? settings;
 
     public DCMM_Mod(ModContentPack content) : base(content)
@@ -16,12 +15,6 @@ public class DCMM_Mod : Mod
 
     public override void DoSettingsWindowContents(Rect inRect)
     {
-        if (!HasSetMotePathsOnce)
-        {
-            DCMM_SetsSettings.SetMotePaths();
-            HasSetMotePathsOnce = true;
-        }
-
         Listing_Standard ls = new();
         ls.Begin(inRect);
         //COMPILED BY NESGUI
@@ -55,16 +48,16 @@ public class DCMM_Mod : Mod
         Text.Font = GameFont.Small;
         Text.Anchor = TextAnchor.MiddleLeft;
 
-        bool CMMMotes = Widgets.ButtonText(SelectFolderRect, DCMM_SetsSettings.CurrentFolderPath?[(DCMM_SetsSettings.CurrentFolderPath.LastIndexOf("/") + 1)..] ?? "Missing Folder");
+        bool CMMMotes = Widgets.ButtonText(SelectFolderRect, DCMM_SetsSettings.SelectedMoteSetDef.LabelCap);
         GUI.DrawTexture(CreditToNesGUI, ContentFinder<Texture2D>.Get("NesGuiCreditIcon/icon"));
 
-        GUI.DrawTexture(HappyImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Happy", false));
-        GUI.DrawTexture(ContentImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Content", false));
-        GUI.DrawTexture(NeutralImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Neutral", false));
-        GUI.DrawTexture(MinorImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Minor", false));
-        GUI.DrawTexture(MajorImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Major", false));
-        GUI.DrawTexture(BreakingImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Breaking", false));
-        GUI.DrawTexture(DownedImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.CurrentFolderPath + "/Downed", false));
+        GUI.DrawTexture(HappyImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Happy).graphicData.texPath, false));
+        GUI.DrawTexture(ContentImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Content).graphicData.texPath, false));
+        GUI.DrawTexture(NeutralImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Neutral).graphicData.texPath, false));
+        GUI.DrawTexture(MinorImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Minor).graphicData.texPath, false));
+        GUI.DrawTexture(MajorImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Major).graphicData.texPath, false));
+        GUI.DrawTexture(BreakingImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Breaking).graphicData.texPath, false));
+        GUI.DrawTexture(DownedImgRect, ContentFinder<Texture2D>.Get(DCMM_SetsSettings.MoteFor(MoteDefType.Downed).graphicData.texPath, false));
 
         Text.Font = prevFont;
         Text.Anchor = textAnchor;
@@ -101,14 +94,14 @@ public class DCMM_Mod : Mod
 
         if (CMMMotes)
         {
-            Find.WindowStack.Add(new FloatMenu(GetFolders()));
+            Find.WindowStack.Add(new FloatMenu(GetOptions()));
         }
 
         ls.End();
         base.DoSettingsWindowContents(inRect);
     }
 
-    public List<FloatMenuOption> GetFolders() => [.. DCMM_SetsSettings.FolderPaths.Select(path => new FloatMenuOption(path, () => DCMM_SetsSettings.CurrentFolderPath = Path.Combine("DCMMMotes/", path)))];
+    public List<FloatMenuOption> GetOptions() => [.. DefDatabase<MoteSetDef>.AllDefs.Select(def => new FloatMenuOption(def.LabelCap, () => DCMM_SetsSettings.SelectedMoteSetDef = def))];
 
     public override string SettingsCategory() => "[DN] Custom Mote Maker";
 }

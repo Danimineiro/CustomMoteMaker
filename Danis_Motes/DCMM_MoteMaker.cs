@@ -10,6 +10,8 @@ public static class DCMM_MoteMaker
 {
     private static readonly Dictionary<Pawn, int> pawnTicksTillNextMote = [];
 
+    public static event PawnPressedEventHandler? PawnPressed;
+
     public static bool IsPawnOnCooldown(Pawn pawn)
     {
         if (!pawnTicksTillNextMote.TryGetValue(pawn, out int ticksWhenNextAvailable)) return false;
@@ -19,6 +21,14 @@ public static class DCMM_MoteMaker
 
     public static void MakeMoodMoteFor(Pawn pawn)
     {
+        if (PawnPressed != null)
+        {
+            PawnPressedArguments args = new(pawn);
+            PawnPressed(args);
+
+            if (args.Handled) return;
+        }
+
         if (!pawn.CanHaveMotes()) return;
 
         if (pawn.Downed && pawn.DevelopmentalStage > DevelopmentalStage.Baby)

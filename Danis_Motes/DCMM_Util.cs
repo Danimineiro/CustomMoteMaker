@@ -23,8 +23,7 @@ public static class DCMM_Util
         pawn != null &&                             // Pawn exists
         pawn.Spawned &&                             // Pawn is spawned
         !pawn.Dead &&                               // Pawn is alive
-        !pawn.RaceProps.Animal &&                   // Pawn is not an animal
+        pawn.RaceProps.Humanlike &&                 // Pawn is humanlike
         pawn.Faction?.IsPlayer == true &&           // Pawn faction is players faction
-        pawn.mindState?.mentalBreaker != null &&    // Pawn can have mental states
-        !pawn.IsVehicle();                          // Pawn is not a vehicle
+        pawn.mindState?.mentalBreaker != null;      // Pawn can have mental states
 }

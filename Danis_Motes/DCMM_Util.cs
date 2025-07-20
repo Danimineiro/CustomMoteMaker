@@ -19,8 +19,7 @@ public static class DCMM_Util
         }
     }
 
-    public static bool CanHaveMotes([NotNullWhen(true)] this Pawn? pawn) =>
-        pawn != null &&                             // Pawn exists
+    public static bool CanHaveMotes(this Pawn pawn) =>
         pawn.Spawned &&                             // Pawn is spawned
         !pawn.Dead &&                               // Pawn is alive
         pawn.RaceProps.Humanlike &&                 // Pawn is humanlike

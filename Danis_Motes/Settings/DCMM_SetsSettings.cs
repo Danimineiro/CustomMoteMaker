@@ -16,12 +16,18 @@ public class DCMM_SetsSettings : ModSettings
     {
         get
         {
-            if (selectedMoteSetDef is not null) return selectedMoteSetDef;            
+            if (selectedMoteSetDef is not null) return selectedMoteSetDef;
             if (selectedMoteSetDefName is not null)
             {
-                return selectedMoteSetDef = DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName);
+                if (DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName, false) is MoteSetDef def)
+                {
+                    return selectedMoteSetDef = def;
+                }
+
+                Log.Warning($"[DCMM] Could not find moteset with defname of {selectedMoteSetDefName} in loaded mods. Reverting to default set..");
             }
 
+            selectedMoteSetDefName = MoteSetDefOf.DCMM_Default.defName;
             return selectedMoteSetDef ?? MoteSetDefOf.DCMM_Default;
         }
         set

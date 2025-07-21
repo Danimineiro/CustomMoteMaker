@@ -12,7 +12,7 @@
 		<OutputPath>1.6/Assemblies</OutputPath>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyVersion>4.2.0</AssemblyVersion>
+		<AssemblyVersion>4.2.1</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

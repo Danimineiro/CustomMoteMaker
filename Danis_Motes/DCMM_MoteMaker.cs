@@ -1,4 +1,5 @@
-﻿using Danis_Motes.Settings;
+﻿using Danis_Motes.Defs;
+using Danis_Motes.Settings;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -31,54 +32,52 @@ public static class DCMM_MoteMaker
 
         if (!pawn.CanHaveMotes()) return;
 
+        ThingDef mote = GetDefaultMoteForPawn(pawn);
+        pawn.SpawnAnimatedBubble(mote);
+    }
+
+    public static ThingDef GetDefaultMoteForPawn(Pawn pawn)
+    {
+        return MoteSetDefOf.DCMM_Default.GetMote(GetDefaultMoteTypeForPawn(pawn));
+    }
+
+    public static MoteDefType GetDefaultMoteTypeForPawn(Pawn pawn)
+    {
         if (pawn.Downed && pawn.DevelopmentalStage > DevelopmentalStage.Baby)
         {
-            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.DownedMote);
-            return;
+            return MoteDefType.Downed;
         }
 
         if (pawn.MentalStateDef != null)
         {
-            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.BreakingMote);
-            return;
+            return MoteDefType.Breaking;
         }
 
         MentalBreaker mentalBreaker = pawn.mindState.mentalBreaker;
 
         if (mentalBreaker.BreakExtremeIsImminent)
         {
-            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.BreakingMote);
-            return;
+            return MoteDefType.Breaking;
         }
 
         if (mentalBreaker.BreakMajorIsImminent)
         {
-            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.MajorMote);
-            return;
+            return MoteDefType.Major;
         }
 
         if (mentalBreaker.BreakMinorIsImminent)
         {
-            pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.MinorMote);
-            return;
+            return MoteDefType.Minor;
         }
 
         int num = Mathf.RoundToInt(Mathf.Lerp(0f, 4f, (mentalBreaker.CurMood - mentalBreaker.BreakThresholdMinor) / (1f - mentalBreaker.BreakThresholdMinor)));
 
-        switch (num)
+        return num switch
         {
-            case 0 or 1:
-                pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.NeutralMote);
-                return;
-
-            case 2 or 3:
-                pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.ContentMote);
-                return;
-
-            case 4:
-                pawn.SpawnAnimatedBubble(DCMM_SetsSettings.SelectedMoteSetDef.HappyMote);
-                return;
-        }
+            0 or 1 => MoteDefType.Neutral,
+            2 or 3 => MoteDefType.Content,
+            _ => MoteDefType.Happy
+        };
     }
 
     public static void SpawnAnimatedBubble(this Pawn pawn, ThingDef thingDef, int cooldownTicks = 45)

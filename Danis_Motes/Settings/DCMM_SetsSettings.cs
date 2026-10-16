@@ -1,6 +1,4 @@
 ﻿using Danis_Motes.Defs;
-using RimWorld.IO;
-using System.Runtime.CompilerServices;
 using Verse;
 
 namespace Danis_Motes.Settings;

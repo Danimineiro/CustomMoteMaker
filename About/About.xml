@@ -14,6 +14,8 @@
 		<li>Ludeon.RimWorld</li>
 		<li>Ludeon.RimWorld.Royalty</li>
 		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Anomaly</li>
 		<li>brrainz.harmony</li>
 	</loadAfter>
 	<supportedVersions>
@@ -21,9 +23,10 @@
 		<li>1.4</li>
 		<li>1.5</li>
 		<li>1.6</li>
+		<li>1.7</li>
 	</supportedVersions>
 	<packageId>dani.CustomMoteMaker</packageId>
 	<description>Selecting a pawn causes a mote to spawn in relation to their current mood in relation to mental break thresholds.</description>
-	<modVersion IgnoreIfNoMatchingField="True">4.1.1</modVersion>
+	<modVersion IgnoreIfNoMatchingField="True">5.0.0</modVersion>
 	<url>https://github.com/Danimineiro/CustomMoteMaker</url>
 </ModMetaData>

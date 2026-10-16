@@ -16,13 +16,22 @@ public class DCMM_SetsSettings : ModSettings
     {
         get
         {
-            if (selectedMoteSetDef is not null) return selectedMoteSetDef;            
-            if (selectedMoteSetDefName is not null)
+            try
             {
-                return selectedMoteSetDef = DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName);
-            }
+                if (selectedMoteSetDef is not null) return selectedMoteSetDef;
+                if (selectedMoteSetDefName is not null)
+                {
+                    return selectedMoteSetDef = DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName);
+                }
 
-            return selectedMoteSetDef ?? MoteSetDefOf.DCMM_Default;
+                return selectedMoteSetDef ?? MoteSetDefOf.DCMM_Default;
+            }
+            finally
+            {
+#if DEBUG
+                Log.Message($"[DCMM] selectedMoteSetDef: {selectedMoteSetDef?.defName ?? "none"}.");
+#endif
+            }
         }
         set
         {

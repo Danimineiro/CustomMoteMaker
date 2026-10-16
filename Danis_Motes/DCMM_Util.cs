@@ -4,21 +4,6 @@ namespace Danis_Motes;
 
 public static class DCMM_Util
 {
-    public static bool IsVehicle(this Pawn pawn)
-    {
-        if (pawn.def.thingClass is not Type thingClass) return false;
-
-        Type baseType = thingClass;
-
-        while (true)
-        {
-            if (baseType.Name == "VehiclePawn") return true;
-            if (baseType == typeof(Pawn) || baseType == typeof(object)) return false;
-
-            baseType = thingClass.BaseType;
-        }
-    }
-
     public static bool CanHaveMotes(this Pawn pawn) =>
         pawn.Spawned &&                             // Pawn is spawned
         !pawn.Dead &&                               // Pawn is alive

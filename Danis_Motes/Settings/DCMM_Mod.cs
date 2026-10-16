@@ -6,11 +6,9 @@ namespace Danis_Motes.Settings;
 
 public class DCMM_Mod : Mod
 {
-    public static DCMM_SetsSettings? settings;
-
     public DCMM_Mod(ModContentPack content) : base(content)
     {
-        settings = GetSettings<DCMM_SetsSettings>();
+        _ = GetSettings<DCMM_SetsSettings>();
     }
 
     public override void DoSettingsWindowContents(Rect inRect)
@@ -101,7 +99,7 @@ public class DCMM_Mod : Mod
         base.DoSettingsWindowContents(inRect);
     }
 
-    public List<FloatMenuOption> GetOptions() => [.. DefDatabase<MoteSetDef>.AllDefs.Select(def => new FloatMenuOption(def.LabelCap, () => DCMM_SetsSettings.SelectedMoteSetDef = def))];
+    public static List<FloatMenuOption> GetOptions() => [.. DefDatabase<MoteSetDef>.AllDefs.Select(def => new FloatMenuOption(def.LabelCap, () => DCMM_SetsSettings.SelectedMoteSetDef = def))];
 
     public override string SettingsCategory() => "[DN] Custom Mote Maker";
 }

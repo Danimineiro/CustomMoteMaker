@@ -22,7 +22,7 @@ public static class DCMM_MoteMaker
 
     public static void MakeMoodMoteFor(Pawn pawn)
     {
-        if (PawnPressed != null)
+        if (PawnPressed is not null)
         {
             PawnPressedArguments args = new(pawn);
             PawnPressed(args);
@@ -38,7 +38,7 @@ public static class DCMM_MoteMaker
 
     public static ThingDef GetDefaultMoteForPawn(Pawn pawn)
     {
-        return MoteSetDefOf.DCMM_Default.GetMote(GetDefaultMoteTypeForPawn(pawn));
+        return DCMM_SetsSettings.SelectedMoteSetDef.GetMote(GetDefaultMoteTypeForPawn(pawn));
     }
 
     public static MoteDefType GetDefaultMoteTypeForPawn(Pawn pawn)
@@ -48,7 +48,7 @@ public static class DCMM_MoteMaker
             return MoteDefType.Downed;
         }
 
-        if (pawn.MentalStateDef != null)
+        if (pawn.MentalStateDef is not null)
         {
             return MoteDefType.Breaking;
         }
@@ -97,9 +97,8 @@ public static class DCMM_MoteMaker
             return;
         }
 
-        if (cooldownTicks < 0)
-        {
-            Log.Error("Mote Cooldown was set to less than 0. The cooldown can't be smaller than 0.");
-        }
+        if (cooldownTicks >= 0) return;
+
+        Log.Error("Mote Cooldown was set to less than 0. The cooldown can't be smaller than 0.");
     }
 }

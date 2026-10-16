@@ -1,27 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net481</TargetFramework>
-		<LangVersion>13</LangVersion>
+		<TargetFramework>net10.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-		
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace />
+
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RootNamespace />
-		<OutputPath>1.6/Assemblies</OutputPath>
-		<GenerateDocumentationFile>False</GenerateDocumentationFile>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyVersion>4.2.1</AssemblyVersion>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+		
+		<OutputPath>1.7/Assemblies</OutputPath>
+		<AssemblyVersion>5.0.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518" />
-		<PackageReference Include="Lib.Harmony" Version="2.3.6" />
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4979-alpha" />
+		<PackageReference Include="Lib.Harmony" Version="2.4.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Using Include="System.Diagnostics.CodeAnalysis" />
+		<Using Include="System.Diagnostics.CodeAnalysis" />
 	</ItemGroup>
-
 </Project>
+

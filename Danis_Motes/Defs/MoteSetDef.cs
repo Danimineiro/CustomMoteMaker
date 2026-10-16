@@ -3,6 +3,7 @@
 namespace Danis_Motes.Defs;
 public class MoteSetDef : Def
 {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value 0. These fields are assigned at runtime by RimWorld itself.
     private readonly string artist = string.Empty;
     private readonly string? oldFolderName;
 
@@ -16,6 +17,7 @@ public class MoteSetDef : Def
 
     public string Artist => artist;
     public string? OldFolderName => oldFolderName;
+#pragma warning restore CS0649
 
     public ThingDef HappyMote => happyMote;
     public ThingDef ContentMote => contentMote;

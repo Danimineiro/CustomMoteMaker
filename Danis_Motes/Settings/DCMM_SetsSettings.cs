@@ -1,6 +1,4 @@
 ﻿using Danis_Motes.Defs;
-using RimWorld.IO;
-using System.Runtime.CompilerServices;
 using Verse;
 
 namespace Danis_Motes.Settings;
@@ -16,19 +14,22 @@ public class DCMM_SetsSettings : ModSettings
     {
         get
         {
-            if (selectedMoteSetDef is not null) return selectedMoteSetDef;
-            if (selectedMoteSetDefName is not null)
+            try
             {
-                if (DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName, false) is MoteSetDef def)
+                if (selectedMoteSetDef is not null) return selectedMoteSetDef;
+                if (selectedMoteSetDefName is not null)
                 {
-                    return selectedMoteSetDef = def;
+                    return selectedMoteSetDef = DefDatabase<MoteSetDef>.GetNamed(selectedMoteSetDefName);
                 }
 
-                Log.Warning($"[DCMM] Could not find moteset with defname of {selectedMoteSetDefName} in loaded mods. Reverting to default set..");
+                return selectedMoteSetDef ?? MoteSetDefOf.DCMM_Default;
             }
-
-            selectedMoteSetDefName = MoteSetDefOf.DCMM_Default.defName;
-            return selectedMoteSetDef ?? MoteSetDefOf.DCMM_Default;
+            finally
+            {
+#if DEBUG
+                Log.Message($"[DCMM] selectedMoteSetDef: {selectedMoteSetDef?.defName ?? "none"}.");
+#endif
+            }
         }
         set
         {
